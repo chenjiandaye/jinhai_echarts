@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>金水丽苑社区居委</title>
+    <link rel="stylesheet" href="./styles/animate.min.css">
+    <link rel="stylesheet" href="./styles/index1.min.css">
+    <script src="./scripts/vue.js"></script>
+    <script src="./scripts/echarts.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="mask_layer1">
+            <div class="pop_layer">
+                <div class="title_box">
+                    <span class="name">金水丽苑社区居委</span>
+                    <div class="close_btn">
+                        <img src="./images/img_01/close_icon.png" alt="">
+                    </div>
+                </div>
+                <div class="content_box">
+                    <div class="c_top">
+                        <div class="top_item">
+                            <img src="./images/img_01/icon1.png">
+                            <div class="item-right">
+                                <div class="right_top">人口总数</div>
+                                <div class="right_bot bot1">3288</div>
+                            </div>
+                        </div>
+                        <div class="top_item">
+                            <img src="./images/img_01/icon2.png">
+                            <div class="item-right">
+                                <div class="right_top">户籍人口</div>
+                                <div class="right_bot bot2">2446</div>
+                            </div>
+                        </div>
+                        <div class="top_item">
+                            <img src="./images/img_01/icon3.png">
+                            <div class="item-right">
+                                <div class="right_top">外来人口</div>
+                                <div class="right_bot bot3">1562</div>
+                            </div>
+                        </div>
+                        <div class="top_item">
+                            <img src="./images/img_01/icon4.png">
+                            <div class="item-right">
+                                <div class="right_top">境外人口</div>
+                                <div class="right_bot bot4">6</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="c_bottom">
+                        <div class="bot_f_left">
+                            <div class="bot_f_left_tit">
+                                <img src="./images/img_01/portrait1.png" alt="">
+                                <div class="tit_post">站长</div>
+                                <div class="tit_name_phone">朱辉 13663970078</div>
+                            </div>
+                            <div class="bot_f_left_tab">
+                                <div v-for="(item,index) of tabList" :key="index"
+                                    :class="item.active ? 'tit_tab active' : 'tit_tab'" @click="tabChange(index)">
+                                    {{item.title}}</div>
+                            </div>
+                            <div class="tab_c" v-show="tabList[0].active">
+                                <div class="grade1">
+                                    <div class="card animated fadeInDown">
+                                        <div class="card_l">
+                                            <img src="./images/img_01/portrait2.png" alt="">
+                                            <div class="card_post">格长</div>
+                                        </div>
+                                        <div class="card_r">
+                                            <div class="card_r_t">
+                                                <span class="name">费新明</span>
+                                                <span class="post">巡查专员</span>
+                                            </div>
+                                            <div class="card_r_b">13789009458</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grade2">
+                                    <div class="card animated fadeInLeft">
+                                        <div class="card_l">
+                                            <img src="./images/img_01/portrait2.png" alt="">
+                                            <div class="card_post">格长</div>
+                                        </div>
+                                        <div class="card_r">
+                                            <div class="card_r_t">
+                                                <span class="name">费新明</span>
+                                                <span class="post">巡查专员</span>
+                                            </div>
+                                            <div class="card_r_b">13789009458</div>
+                                        </div>
+                                    </div>
+                                    <div class="card animated fadeInRight">
+                                        <div class="card_l">
+                                            <img src="./images/img_01/portrait2.png" alt="">
+                                            <div class="card_post">格长</div>
+                                        </div>
+                                        <div class="card_r">
+                                            <div class="card_r_t">
+                                                <span class="name">费新明</span>
+                                                <span class="post">巡查专员</span>
+                                            </div>
+                                            <div class="card_r_b">13789009458</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grade3">
+                                    <div class="card animated fadeInLeft">
+                                        <div class="card_l">
+                                            <img src="./images/img_01/portrait2.png" alt="">
+                                            <div class="card_post">格长</div>
+                                        </div>
+                                        <div class="card_r">
+                                            <div class="card_r_t">
+                                                <span class="name">费新明</span>
+                                                <span class="post">巡查专员</span>
+                                            </div>
+                                            <div class="card_r_b">13789009458</div>
+                                        </div>
+                                    </div>
+                                    <div class="card animated fadeInRight">
+                                        <div class="card_l">
+                                            <img src="./images/img_01/portrait2.png" alt="">
+                                            <div class="card_post">格长</div>
+                                        </div>
+                                        <div class="card_r">
+                                            <div class="card_r_t">
+                                                <span class="name">费新明</span>
+                                                <span class="post">巡查专员</span>
+                                            </div>
+                                            <div class="card_r_b">13789009458</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bot_f_right">
+                            <div class="r_top">
+                                <div class="r_top_item">
+                                    <img src="./images/img_01/incident.png" alt="">
+                                    <div class="item_line">
+                                        <span class="line_l">今日事件</span>
+                                        <span class="line_r">89</span>
+                                    </div>
+                                </div>
+                                <div class="r_top_item">
+                                    <img src="./images/img_01/incident.png" alt="">
+                                    <div class="item_line">
+                                        <span class="line_l">本月事件</span>
+                                        <span class="line_r">7</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="r_bot">
+                                <div class="r_bot_tit">
+                                    <img src="./images/img_01/incident.png" alt="">
+                                    <div class="item_line">
+                                        <span class="line_l">本年事件</span>
+                                        <span class="line_r">89889</span>
+                                    </div>
+                                </div>
+                                <div class="r_bot_tit_l">
+                                    <div class="pie_l">
+                                        <div class="pie_num">697</div>
+                                        <div class="pie_name">主动发现</div>
+                                    </div>
+                                    <div class="pie_info">
+                                        <div class="info_per">37%</div>
+                                        <div class="info_per_name">主动发现率</div>
+                                    </div>
+                                    <div id="main1"></div>
+                                </div>
+                                <div class="r_bot_tit_r">
+                                    <div class="pie_l">
+                                        <div class="pie_num">352</div>
+                                        <div class="pie_name">已结案</div>
+                                    </div>
+                                    <div class="pie_info">
+                                        <div class="info_per">88%</div>
+                                        <div class="info_per_name">结案率</div>
+                                    </div>
+                                    <div id="main2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                tabList: [{
+                        title: '第42网格',
+                        active: true
+                    },
+                    {
+                        title: '第42网格',
+                        active: false
+                    },
+                    {
+                        title: '第42网格',
+                        active: false
+                    },
+                    {
+                        title: '第42网格',
+                        active: false
+                    }
+                ]
+            },
+            methods: {
+                tabChange(i) {
+                    this.tabList.forEach((item) => {
+                        item.active = false
+                    })
+                    this.tabList[i].active = true
+                },
+                getData(){
+                    var a = [{"wgName":"第1网格"},{"wgName":"第2网格"},{"wgName":"第3网格"},{"wgName":"第4网格"}]
+                    a.forEach((item)=>{
+                        item.active = false
+                    })
+                    a[0].active = true
+                    this.tabList = a 
+                },
+                setPie(id,gross,have) {
+                    var myChart = echarts.init(document.getElementById(id))
+                    // 指定图表的配置项和数据
+                    var option = {
+                        series: [{
+                            type: 'pie',
+                            radius: ['62%', '70%'],
+                            hoverAnimation: false,
+                            avoidLabelOverlap: false,
+                            clockwise: false,
+                            left: 0,
+                            top: 0,
+                            right: 0,
+                            bottom: 0,
+                            // width:'150px',
+                            // height:'150px',
+                            label: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {},
+                            labelLine: {
+                                show: false
+                            },
+                            data: [{
+                                    value: have
+                                },
+                                {
+                                    value: gross
+                                },
+                            ]
+                        }],
+                        color: ['#74F9F5', '#999999']
+                    };
+
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                }
+            },
+            mounted() {
+                this.setPie('main1',53,37)
+                this.setPie('main2',80,20)
+            },
+        })
+    </script>
+</body>
+
+</html>
