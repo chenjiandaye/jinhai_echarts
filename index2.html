@@ -16,14 +16,110 @@
         <div class="mask_layer2">
             <div class="pop_layer">
                 <div class="title_box">
-                    <span class="name">金水丽苑社区居委</span>
-                    <div class="close_btn">
-                        <img src="./images/img_01/close_icon.png" alt="">
-                    </div>
+                    <span class="name">金水丽苑</span>
                 </div>
                 <div class="content_box">
                     <div class="c_top">
-                        <div class="top_left"></div>
+                        <div class="top_left">
+                            <div class="left-item1">
+                                <div class="item-tit">人口总数</div>
+                                <div class="item-box">
+                                    <div class="item-box-top">
+                                        <div>
+                                            <div class="reg_num">5962</div>
+                                            <div class="reg_pop">户籍人口</div>
+                                        </div>
+                                        <div id="pie1"></div>
+                                        <div class="pre_box">
+                                            <div class="per_num">36%</div>
+                                            <div class="per_text">上月环比</div>
+                                        </div>
+                                    </div>
+                                    <ul class="item-box-bot">
+                                        <li class="list">
+                                            常驻人口
+                                            <span>9999</span>
+                                        </li>
+                                        <li class="list">
+                                            人在户不在
+                                            <span>888</span>
+                                        </li>
+                                        <li class="list">
+                                            户在人不在
+                                            <span>222</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="left-item2">
+                                <div class="item-tit">8613</div>
+                                <div class="item-box">
+                                    <div class="item-box-top">
+                                        <div>
+                                            <div class="reg_num">5962</div>
+                                            <div class="reg_pop">户籍人口</div>
+                                        </div>
+                                        <div id="pie2"></div>
+                                        <div class="pre_box">
+                                            <div class="per_num">36%</div>
+                                            <div class="per_text">上月环比</div>
+                                        </div>
+                                    </div>
+                                    <div class="item-box-bot">
+                                        <ul>
+                                            <li class="list yellow">
+                                                实有登记
+                                                <span>9999</span>
+                                            </li>
+                                            <li class="list">
+                                                人在户
+                                                <span>888</span>
+                                            </li>
+                                            <li class="list">
+                                                户在人
+                                                <span>222</span>
+                                            </li>
+                                        </ul>
+                                        <ul>
+                                            <li class="list yellow">
+                                                常驻人口
+                                                <span>9999</span>
+                                            </li>
+                                            <li class="list">
+                                                人在户
+                                                <span>888</span>
+                                            </li>
+                                            <li class="list">
+                                                户在
+                                                <span>222</span>
+                                            </li>
+                                        </ul>
+                                        <ul>
+                                            <li class="list yellow">
+                                                常驻人口
+                                                <span>9999</span>
+                                            </li>
+                                            <li class="list">
+                                                人在户
+                                                <span>888</span>
+                                            </li>
+                                            <li class="list">
+                                                户在人
+                                                <span>222</span>
+                                            </li>
+                                        </ul>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="left-item3">
+                                <div class="item-tit">2020/04</div>
+                                <div class="item-box">
+                                    <div class="num">9</div>
+                                    <div class="over_ren">境外人口</div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="top_right">
                             <div class="r_list" v-for="(item,index) of listData" :key="index">
                                 <div class="list_tit">
@@ -76,7 +172,6 @@
                             '帮扶3': 99,
                             '年龄4': 99,
                             '年龄5': 99,
-                            '年龄7': 99,
                         }
 
                     },
@@ -98,6 +193,44 @@
                 data02: [100, 21, 31, 20, 12, 13, 32] // 女
             },
             methods: {
+                setPie(id,gross,have){
+                    var myChart = echarts.init(document.getElementById(id))
+                    // 指定图表的配置项和数据
+                    var option = {
+                        series: [{
+                            type: 'pie',
+                            radius: ['62%', '70%'],
+                            hoverAnimation: false,
+                            avoidLabelOverlap: false,
+                            clockwise: false,
+                            left: 0,
+                            top: 0,
+                            right: 0,
+                            bottom: 0,
+                            // width:'150px',
+                            // height:'150px',
+                            label: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {},
+                            labelLine: {
+                                show: false
+                            },
+                            data: [{
+                                    value: have
+                                },
+                                {
+                                    value: gross
+                                },
+                            ]
+                        }],
+                        color: ['#74F9F5', '#999999']
+                    };
+
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                },
                 setHistogram1() {
                     var _this = this
                     //人口金字塔
@@ -113,9 +246,9 @@
                             top: 20,
                             width: 50,
                             height: 20,
-                            itemWidth: 30,
+                            itemWidth: 20,
                             itemHeight: 4,
-                            fontSize: 16
+                            fontSize: 12
                         },
                         tooltip: {
                             trigger: 'axis',
@@ -154,7 +287,7 @@
                             axisLabel: {
                                 color: '#fff',
                                 rotate: 45,
-                                fontSize: 16
+                                fontSize: 12
                             },
                             splitLine: {
                                 show: false //刻度线
@@ -176,14 +309,14 @@
                             data: _this.yAxisData,
                             axisLabel: {
                                 color: '#fff',
-                                fontSize: 16
+                                fontSize: 12
                             },
                         }],
                         series: [{
                             name: '男',
                             type: 'bar',
                             stack: '年龄',
-                            barWidth: 20,
+                            barWidth: 15,
                             label: {
                                 normal: {
                                     show: false,
@@ -233,9 +366,9 @@
                             top: 20,
                             width: 50,
                             height: 20,
-                            itemWidth: 30,
+                            itemWidth: 20,
                             itemHeight: 4,
-                            fontSize: 16
+                            fontSize: 12
                         },
                         tooltip: {
                             trigger: 'axis',
@@ -269,7 +402,7 @@
                             },
                             axisLabel: {
                                 color: '#fff',
-                                fontSize: 16
+                                fontSize: 12
                             },
                             splitLine: {
                                 show: false //刻度线
@@ -288,7 +421,7 @@
                             },
                             axisLabel: {
                                 color: '#fff',
-                                fontSize: 16
+                                fontSize: 12
                             },
                             splitLine: {
                                 show: true, //刻度线
@@ -308,6 +441,8 @@
                 }
             },
             mounted() {
+                this.setPie('pie1',80,20)
+                this.setPie('pie2',53,37)
                 this.setHistogram1()
                 this.setHistogram2()
             },
