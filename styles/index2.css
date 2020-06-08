@@ -11,6 +11,7 @@ li {
 
 body {
   overflow: hidden;
+  font-family: PingFang SC;
 }
 
 .mask_layer2 {
@@ -111,7 +112,7 @@ body {
 .mask_layer2 .pop_layer .content_box .c_top .top_left .left-item1 .item-box .item-box-top .pre_box {
   position: absolute;
   right: 5px;
-  top: 5px;
+  top: 7px;
   text-align: center;
 }
 
@@ -190,7 +191,7 @@ body {
 .mask_layer2 .pop_layer .content_box .c_top .top_left .left-item2 .item-box .item-box-top .pre_box {
   position: absolute;
   right: 88px;
-  top: 5px;
+  top: 7px;
   text-align: center;
 }
 
