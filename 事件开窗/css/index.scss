@@ -1,0 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+ul,
+li {
+    list-style: none;
+}
+
+body {
+    overflow: hidden;
+    font-family: PingFang SC;
+}
+
+.incident_layer {
+    width: 800px;
+    height: 500px;
+    background-color: rgba(6, 22, 43, .7);
+    padding: 20px 19px;
+
+    .inc_tit {
+        height: 44px;
+        background: url(../img/tit-bg.png) no-repeat;
+        background-size: cover;
+        padding-left: 28px;
+        line-height: 44px;
+        font-size: 20px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #fff;
+    }
+
+    .int_table {
+        background: url(../img/table-bg.png) no-repeat;
+        background-size: cover;
+        margin-top: 20px;
+
+        .int_table_th {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid #555555;
+
+            .int_table_th_td {
+                flex: 1;
+                text-align: center;
+                height: 40px;
+                line-height: 40px;
+                font-size: 14px;
+                font-family: PingFang SC;
+                font-weight: 400;
+                color: #01FEF6;
+            }
+        }
+
+        .int_table_tb {
+            .int_table_tb_tr {
+                display: flex;
+                justify-content: space-between;
+                height: 30px;
+
+                .int_table_tb_tr_td {
+                    flex: 1;
+                    text-align: center;
+                    font-size: 16px;
+                    font-family: DIN Alternate;
+                    font-weight: bold;
+                    color: #fff;
+                    line-height: 30px;
+                }
+
+                .int_table_tb_tr_tt {
+                    width: 110px;
+                    font-size: 14px;
+                    font-family: PingFang SC;
+                    font-weight: 400;
+                    color: #FCEB4F;
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    .int_charts {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+
+        .chart {
+            width: 370px;
+            height: 100%;
+
+            .chart_top {
+                position: relative;
+                height: 18px;
+                line-height: 18px;
+                text-align: center;
+                font-size: 18px;
+                font-family: PingFang SC;
+                font-weight: 500;
+                color: #fff;
+                background: url(../img/chart-tit-bg.png) no-repeat;
+                background-size: cover;
+            }
+
+            .chart_bot {
+                margin-top: 10px;
+                height: 218px;
+                background: url(../img/chart-bg.png) no-repeat;
+                background-size: cover;
+                overflow: hidden;
+
+                #main1,
+                #main2 {
+                    height: 100%;
+                }
+            }
+        }
+    }
+}

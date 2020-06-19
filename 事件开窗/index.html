@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/index.css">
+    <title>事件开窗</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <div class="incident_layer">
+            <div class="inc_tit">{{name}}</div>
+            <div class="int_table">
+                <div class="int_table_th">
+                    <div class="int_table_th_td"></div>
+                    <div class="int_table_th_td">上报</div>
+                    <div class="int_table_th_td">受理</div>
+                    <div class="int_table_th_td">派单</div>
+                    <div class="int_table_th_td">立案</div>
+                    <div class="int_table_th_td">结案</div>
+                    <div class="int_table_th_td">结案率</div>
+                </div>
+                <div class="int_table_tb">
+                    <div class="int_table_tb_tr">
+                        <div class="int_table_tb_tr_tt">今日</div>
+                        <div class="int_table_tb_tr_td" v-for="(item,index) of dataR" :key="index">
+                            {{index == 5 ? item *100+ '%' : item }}
+                        </div>
+                    </div>
+                    <div class="int_table_tb_tr">
+                        <div class="int_table_tb_tr_tt">本月</div>
+                        <div class="int_table_tb_tr_td" v-for="(item,index) of dataB" :key="index">
+                            {{index == 5 ? item*100+ '%' : item }}
+                        </div>
+                    </div>
+                    <div class="int_table_tb_tr">
+                        <div class="int_table_tb_tr_tt">本年</div>
+                        <div class="int_table_tb_tr_td" v-for="(item,index) of dataN" :key="index">
+                            {{index == 5 ? item*100+ '%' : item }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="int_charts">
+                <div class="chart">
+                    <div class="chart_top">
+                        事件统计
+                    </div>
+                    <div class="chart_bot">
+                        <div id="main1"></div>
+                    </div>
+                </div>
+                <div class="chart">
+                    <div class="chart_top">
+                        事件趋势
+                    </div>
+                    <div class="chart_bot">
+                        <div id="main2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/vue.js"></script>
+    <script src="./js/echarts.min.js"></script>
+    <script src="./js/axios.js"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                host: "http://192.168.0.202:8080",
+                address: "/shjh/api/map/getCityCaseSummary.shtml?orgId=6",
+                name: '',
+                dataR: [],
+                dataB: [],
+                dataN: [],
+                dataSJTJ:[],
+                dataY:[],
+                dataYJA:[],
+                dataYSJ:[]
+            },
+            methods: {
+                getData() {
+                    const url = this.host + this.address
+                    axios.get(url).then((res) => {
+                        console.log(res)
+                        const data = res.data
+                        if (data.code === '000000') {
+                            const dataList = data.data
+                            this.setData(dataList)
+                        } else {
+                            console.log(res.statusText)
+                        }
+                    }).catch((err) => {
+                        console.log(err)
+                    })
+                },
+                setData(dataList) {
+                    this.name = dataList.name
+                    this.dataR = dataList.dataR
+                    this.dataB = dataList.dataB
+                    this.dataN = dataList.dataN
+                    this.dataSJTJ = dataList.dataSJTJ
+                    this.setHistogram1()
+                    this.dataY = dataList.dataY
+                    this.dataYJA = dataList.dataYJA
+                    this.dataYSJ = dataList.dataYSJ
+                    this.setHistogram2()
+                },
+                setHistogram1() {
+                    var _this = this
+                    var myChart1 = echarts.init(document.getElementById('main1'))
+                    var option1 = {
+                        color: ['#01FEF6'],
+                        legend: {
+                            textStyle: {
+                                color: "#fff"
+                            },
+                            right: 10,
+                            top: 10,
+                            width: 50,
+                            height: 20,
+                            itemWidth: 16,
+                            itemHeight: 4,
+                            fontSize: 12
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                                type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                            },
+                            formatter: function (data) {
+                                let ttt = data[0].name;
+                                for (let i = 0; i < data.length; i++) {
+                                    ttt += '<br/>' + data[i].seriesName + '：' + data[i].value
+                                }
+                                return ttt;
+                            }
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '3%',
+                            bottom: 0,
+                            containLabel: true
+                        },
+                        xAxis: [{
+                            type: 'category',
+                            data: ['事件', '热线', '部件'],
+                            axisTick: {
+                                show: false
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#555555', //x轴颜色
+                                }
+                            },
+                            axisLabel: {
+                                color: '#fff',
+                                fontSize: 12,
+                                rotate: 40
+                            },
+                            splitLine: {
+                                show: false //刻度线
+                            },
+                        }],
+                        yAxis: [{
+                            type: 'value',
+                            nameLocation: "middle",
+                            axisTick: {
+                                show: false
+                            },
+                            axisLine: {
+                                show: false,
+                                lineStyle: {
+                                    color: '#555555', //y轴颜色
+                                }
+                            },
+                            axisLabel: {
+                                color: '#fff',
+                                fontSize: 12
+                            },
+                            splitLine: {
+                                show: true, //刻度线
+                                lineStyle: {
+                                    color: '#555555'
+                                }
+                            },
+                        }],
+                        series: [{
+                            name: '数量',
+                            type: 'bar',
+                            barWidth: 30,
+                            data: _this.dataSJTJ
+                        }],
+                        label: {
+                            show: true,
+                            position: 'top',
+                            textStyle: { // 数值样式
+                                fontSize: 12
+                            }
+                        }
+                    }
+                    myChart1.setOption(option1)
+                },
+                setHistogram2() {
+                    var _this = this
+                    var myChart2 = echarts.init(document.getElementById('main2'))
+                    var option2 = {
+                        color: ['#01FEF6', '#FCEB4F'],
+                        legend: {
+                            data: ['事件数量', '结案数量'],
+                            textStyle: {
+                                color: "#fff"
+                            },
+                            right: 10,
+                            top: 10,
+                            itemWidth: 16,
+                            itemHeight: 5,
+                            fontSize: 12
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                                type: 'line' // 默认为直线，可选为：'line' | 'shadow'
+                            },
+                            formatter: function (data) {
+                                let ttt = data[0].name;
+                                for (let i = 0; i < data.length; i++) {
+                                    ttt += '<br/>' + data[i].seriesName + '：' + data[i].value
+                                }
+                                return ttt;
+                            }
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '3%',
+                            bottom: 0,
+                            containLabel: true
+                        },
+                        xAxis: [{
+                            type: 'category',
+                            data: _this.dataY,
+                            axisTick: {
+                                show: false
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#555555', //x轴颜色
+                                }
+                            },
+                            axisLabel: {
+                                color: '#fff',
+                                fontSize: 12,
+                                rotate: 40
+                            },
+                            splitLine: {
+                                show: false //刻度线
+                            },
+                        }],
+                        yAxis: [{
+                            type: 'value',
+                            nameLocation: "middle",
+                            axisTick: {
+                                show: false
+                            },
+                            axisLine: {
+                                show: false,
+                                lineStyle: {
+                                    color: '#555555', //y轴颜色
+                                }
+                            },
+                            axisLabel: {
+                                color: '#fff',
+                                fontSize: 12
+                            },
+                            splitLine: {
+                                show: true, //刻度线
+                                lineStyle: {
+                                    color: '#555555'
+                                }
+                            },
+                        }],
+                        series: [{
+                                name: '事件数量',
+                                type: 'line',
+                                data: _this.dataYSJ,
+                                itemStyle: {
+                                    normal: {
+                                        areaStyle: {
+                                            type: 'default',
+                                            //渐变色实现
+                                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, //变化度
+                                                //三种由深及浅的颜色
+                                                [{
+                                                    offset: 0,
+                                                    color: '#01FEF6'
+                                                }, {
+                                                    offset: 1,
+                                                    color: 'transparent'
+                                                }]),
+                                        },
+                                    },
+                                },
+                                areaStyle: {},
+                            },
+                            {
+                                name: '结案数量',
+                                type: 'line',
+                                barWidth: 30,
+                                data: _this.dataYJA,
+                                itemStyle: {
+                                    normal: {
+                                        areaStyle: {
+                                            type: 'default',
+                                            //渐变色实现
+                                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, //变化度
+                                                //三种由深及浅的颜色
+                                                [{
+                                                    offset: 0,
+                                                    color: '#FCEB4F'
+                                                }, {
+                                                    offset: 1,
+                                                    color: 'transparent'
+                                                }]),
+                                        },
+                                    },
+                                },
+                                areaStyle: {},
+                            }
+                        ]
+                    }
+                    myChart2.setOption(option2)
+                }
+            },
+            mounted() {
+                this.getData()
+            }
+        })
+    </script>
+</body>
+
+</html>
