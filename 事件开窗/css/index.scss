@@ -14,9 +14,25 @@ body {
     font-family: PingFang SC;
 }
 
+.el-tooltip__popper.is-dark {
+    background-color: rgba(6,22,43,1)!important;
+    border:0!important;
+    color:#fbeb4f!important;
+    max-width: 500px;
+}
+
+.el-tooltip__popper.is-dark .popper__arrow {
+    background-color: rgba(6,22,43,1)!important;
+}
+
+.el-tooltip__popper.is-dark .popper__arrow::after {
+    background-color: rgba(6,22,43,1)!important;
+}
+
 .incident_layer {
-    width: 800px;
-    height: 500px;
+    position: relative;
+    width: 1000px;
+    height: 600px;
     background-color: rgba(6, 22, 43, .7);
     padding: 20px 19px;
 
@@ -58,7 +74,7 @@ body {
             .int_table_tb_tr {
                 display: flex;
                 justify-content: space-between;
-                height: 30px;
+                height: 40px;
 
                 .int_table_tb_tr_td {
                     flex: 1;
@@ -67,16 +83,22 @@ body {
                     font-family: DIN Alternate;
                     font-weight: bold;
                     color: #fff;
-                    line-height: 30px;
+                    line-height: 40px;
+                    cursor: pointer;
+
+                    &:nth-of-type(7) {
+                        cursor: default;
+                    }
                 }
 
                 .int_table_tb_tr_tt {
-                    width: 110px;
+                    width: 137px;
                     font-size: 14px;
                     font-family: PingFang SC;
                     font-weight: 400;
                     color: #FCEB4F;
                     text-align: center;
+                    line-height: 40px;
                 }
             }
         }
@@ -88,15 +110,15 @@ body {
         margin-top: 20px;
 
         .chart {
-            width: 370px;
+            width: 470px;
             height: 100%;
 
             .chart_top {
                 position: relative;
-                height: 18px;
-                line-height: 18px;
+                height: 20px;
+                line-height: 20px;
                 text-align: center;
-                font-size: 18px;
+                font-size: 20px;
                 font-family: PingFang SC;
                 font-weight: 500;
                 color: #fff;
@@ -106,7 +128,7 @@ body {
 
             .chart_bot {
                 margin-top: 10px;
-                height: 218px;
+                height: 290px;
                 background: url(../img/chart-bg.png) no-repeat;
                 background-size: cover;
                 overflow: hidden;
@@ -114,6 +136,123 @@ body {
                 #main1,
                 #main2 {
                     height: 100%;
+                }
+            }
+        }
+    }
+
+    .inc_pop {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 700px;
+        height: 400px;
+        background-color: rgba(6, 22, 43, .7);
+        padding: 10px;
+
+        .pop_tit {
+            height: 36px;
+            background: url(../img/pop-tit-bg.png) no-repeat;
+            background-size: cover;
+            font-size: 16px;
+            font-family: PingFang SC;
+            font-weight: 500;
+            color: #fff;
+            line-height: 40px;
+            padding-left: 17px;
+            .pop_close {
+                float: right;
+                margin-top: 5px;
+                cursor: pointer;
+            }
+        }
+
+        .pop_list {
+            height: 330px;
+            margin-top: 15px;
+            background: url(../img/pop-list-bg.png) no-repeat;
+            background-size: cover;
+
+            .list_h {
+                display: flex;
+                height: 30px;
+                border-bottom: 1px solid #555555;
+
+                .name {
+                    color: #FBEB4F;
+                    font-size: 13px;
+                    font-family: PingFang SC;
+                    font-weight: 400;
+                    line-height: 30px;
+                    flex: 1.2;
+                    text-align: center;
+                    padding: 0 5px;
+                    &:nth-of-type(1){
+                        flex: 0.9;
+                    }
+                    &:nth-of-type(2){
+                        flex: 0.7;
+                    }
+                    &:nth-of-type(3){
+                        flex: 1.1;
+                    }
+                    &:nth-of-type(4){
+                        flex: 0.7;
+                    }
+                    &:nth-of-type(5){
+                        flex: 1.2;
+                    }
+                }
+            }
+
+            .list_b {
+                overflow-y: scroll;
+                height: 300px;
+                &::-webkit-scrollbar{
+                    display: none;
+                }
+
+                .list_line {
+                    display: flex;
+                    height: 30px;
+                    border-bottom: 1px solid #555555;
+                    cursor: pointer;
+
+                    .value {
+                        flex: 1.2;
+                        font-size: 12px;
+                        font-family: PingFang SC;
+                        font-weight: 400;
+                        color: #fff;
+                        line-height: 30px;
+                        text-align: center;
+                        padding: 0 5px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        .ce_p3_c1{
+                            
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                        }
+                        &:nth-of-type(1){
+                            flex: 0.9;
+                        }
+                        &:nth-of-type(2){
+                            flex: 0.7;
+                        }
+                        &:nth-of-type(3){
+                            flex: 1.1;
+                        }
+                        &:nth-of-type(4){
+                            flex: 0.7;
+                        }
+                        &:nth-of-type(5){
+                            flex: 1.2;
+                        }
+                    }
                 }
             }
         }

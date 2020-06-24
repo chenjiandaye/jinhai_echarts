@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/element-ui.css">
     <title>事件开窗</title>
 </head>
 
@@ -26,19 +27,19 @@
                 <div class="int_table_tb">
                     <div class="int_table_tb_tr">
                         <div class="int_table_tb_tr_tt">今日</div>
-                        <div class="int_table_tb_tr_td" v-for="(item,index) of dataR" :key="index">
+                        <div class="int_table_tb_tr_td" v-for="(item,index) of dataR" :key="index" @click="index != 5 && popup(index+1)">
                             {{index == 5 ? item *100+ '%' : item }}
                         </div>
                     </div>
                     <div class="int_table_tb_tr">
                         <div class="int_table_tb_tr_tt">本月</div>
-                        <div class="int_table_tb_tr_td" v-for="(item,index) of dataB" :key="index">
+                        <div class="int_table_tb_tr_td" v-for="(item,index) of dataB" :key="index" @click="index != 5 && popup(index+6)">
                             {{index == 5 ? item*100+ '%' : item }}
                         </div>
                     </div>
                     <div class="int_table_tb_tr">
                         <div class="int_table_tb_tr_tt">本年</div>
-                        <div class="int_table_tb_tr_td" v-for="(item,index) of dataN" :key="index">
+                        <div class="int_table_tb_tr_td" v-for="(item,index) of dataN" :key="index" @click="index != 5 && popup(index+11)">
                             {{index == 5 ? item*100+ '%' : item }}
                         </div>
                     </div>
@@ -62,18 +63,242 @@
                     </div>
                 </div>
             </div>
+            <div class="inc_pop" v-show="popShow">
+                <div class="pop_tit">事件详情
+                    <div class="pop_close">
+                        <img src="./img/close.png" alt="" @click="closePop">
+                    </div>
+                </div>
+                <div class="pop_list">
+                    <div class="list_h">
+                        <div class="name">任务编号</div>
+                        <div class="name">主责部门</div>
+                        <div class="name">案件地址</div>
+                        <div class="name">来源</div>
+                        <div class="name">问题描述</div>
+                        <div class="name">发现时间</div>
+                    </div>
+                    <div class="list_b">
+                        <div class="list_line" 
+                            v-for="item of taskinfoModelList"
+                            :key="item.id"
+                            @click="listClickChange(item.taskid)"
+                        >
+                            <div class="value"> 
+                                {{item.taskid}}
+                            </div>
+                            <div class="value">{{item.executedeptname}}</div>
+                            <div class="value">
+                                <!-- <el-popover
+                                    popper-class="my_popover"
+                                    placement="top-start"
+                                    width="500"
+                                    trigger="hover"
+                                    :content="item.address">
+                                    <div  class="ce_p3_c1" slot="reference"> 
+                                        {{item.address}}</div>
+                                </el-popover> -->
+                                <el-tooltip :content="item.address" placement="top">
+                                    <div  class="ce_p3_c1"> 
+                                        {{item.address}}</div>
+                                </el-tooltip>
+                            </div>
+                            <div class="value">{{item.infosourcename}}</div>
+                            <div class="value">
+                                <!-- <el-popover
+                                    popper-class="my_popover"
+                                    placement="top-start"
+                                    width="500"
+                                    trigger="hover"
+                                    :content="item.description">
+                                    <div  class="ce_p3_c1" slot="reference"> 
+                                        {{item.description}}</div>
+                                </el-popover> -->
+
+                                <el-tooltip :content="item.description" placement="top">
+                                    <div  class="ce_p3_c1"> 
+                                        {{item.description}}</div>
+                                </el-tooltip>
+                            </div>
+                            <div class="value">{{(item.discovertime).substr(0,19)}}</div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="mask_layer1" v-show="isShowTip">
+                <div class="pop_layer">
+                    <div class="con_box">
+                        <div class="ce_top">
+                            城市事件
+                            <div class="pop_close">
+                                <img src="./img/close.png" alt="" @click="closeSecPop">
+                            </div>
+                        </div>
+                       
+                        <div class="ce_center">
+                            <div class="ce_center_top">
+                                <div class="ce_center_top_box">
+                                    <div class="ce_p1">
+                                        <div class="ce_p1_l">
+                                            <img src="./images/img_03/t1.png" alt="">
+                                        </div>
+                                        <div class="ce_p1_r">{{tTaskinfo.taskid}}</div>
+                                    </div>
+            
+                                    <div class="ce_p1">
+                                        <div class="ce_p1_l">
+                                            <img src="./images/img_03/t2.png" alt="">
+                                        </div>
+                                        <div class="ce_p1_r">{{tTaskinfo.infotypename}}</div>
+                                    </div>
+            
+                                    <div class="ce_p1">
+                                        <div class="ce_p1_l">
+                                            <img src="./images/img_03/t3.png" alt="">
+                                        </div>
+                                        <div class="ce_p1_r">{{tTaskinfo.executedeptname}}</div>
+                                    </div>
+            
+                                    <div class="ce_p1">
+                                        <div class="ce_p1_l">
+                                            <img src="./images/img_03/t4.png" alt="">
+                                        </div>
+                                        <div class="ce_p1_r">{{tTaskinfo.infosourcename}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ce_center_con">
+                                <div class="ce_con_p1">
+                                    <div class="ce_p1_l">
+                                        <div>分</div>
+                                        <div>类</div>
+                                    </div> 
+                                    <div class="ce_p1_c">{{tTaskinfo.sort}}</div>     
+                                    <div class="ce_p1_r">
+                                        <div class="p1r_l">
+                                            <img src="./images/img_03/t5.png" alt="">
+                                        </div>
+                                        <div class="p1r_r">
+                                            {{tTaskinfo.statusname}}
+                                        </div>
+                                    </div>  
+                                </div>
+    
+                                <div class="ce_con_p2">
+                                    <div class="ce_p2_l">
+                                        主责部门
+                                    </div> 
+                                    <div class="ce_p2_c">{{tTaskinfo.executedeptname}}</div>     
+                                </div>
+    
+                                <div class="ce_con_p2">
+                                    <div class="ce_p2_l">
+                                        <div>地</div>
+                                        <div>址</div>
+                                    </div> 
+                                    <div class="ce_p2_c">{{tTaskinfo.address}}</div>     
+                                </div>
+    
+                                <div class="ce_con_p3">
+                                    <div class="ce_p3_l">
+                                        问题描述
+                                    </div> 
+                                    <div class="ce_p3_c"><el-popover
+                                        placement="top-start"
+                                        width="500"
+                                        trigger="hover"
+                                        :content="tTaskinfo.description">
+                                        <div  class="ce_p3_c1" slot="reference">{{tTaskinfo.description}}</div>
+                                    </el-popover></div>
+                                        
+                                </div>
+                                <div class="ce_con_p3">
+                                    <div class="ce_p3_l">
+                                        派遣备注
+                                    </div> 
+                                    <div class="ce_p3_c"><el-popover
+                                        placement="top-start"
+                                        width="500"
+                                        trigger="hover"
+                                        :content="tTaskinfo.dispatchnote">
+                                        <div  class="ce_p3_c1" slot="reference">{{tTaskinfo.dispatchnote}}</div>
+                                    </el-popover></div>
+                                </div>
+                            </div>
+    
+                        </div>
+                        <div class="ce_bottom">
+                            <div class="cb_l">
+                                <img src="./images/img_03/t6.png" alt="">
+                            </div>
+                            <div  class="cb_r">
+                                <div class="cr_c" style="width:60%">
+                                    <div class="cbc_p1">
+                                        <div class="cbc_p1_l">
+                                            <div>发</div>
+                                            <div>现</div>
+                                        </div>
+                                        <div class="cbc_p1_r">
+                                           {{tTaskinfo.discovertime}}
+                                        </div>
+                                    </div>
+                                    <div class="cbc_p1" style="margin-top:15px;">
+                                        <div class="cbc_p1_l">
+                                            整体截止
+                                        </div>
+                                        <div class="cbc_p1_r">
+                                            {{tTaskinfo.allendtime}}
+                                        </div>
+                                    </div>
+    
+                                </div>
+                                
+                                <div class="cr_c" style="width:40%">
+                                    <div class="cbc_p1">
+                                        <div class="cbc_p1_l">
+                                           最后处理
+                                        </div>
+                                        <div class="cbc_p1_r">
+                                            {{tTaskinfo.lastsolvingtime}}
+                                        </div>
+                                    </div>
+                                    <div class="cbc_p1" style="margin-top:15px;">
+                                        <div class="cbc_p1_l">
+                                          <div>结</div>
+                                          <div>案</div>
+                                        </div>
+                                        <div class="cbc_p1_r">
+                                            {{tTaskinfo.endtime}}
+                                        </div>
+                                    </div>
+    
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="ce_imgBox">
+                            <div class="imgCon" v-for="(item,index) in imgList" :key="index">
+                                <img :src="item" alt="">
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script src="./js/vue.js"></script>
     <script src="./js/echarts.min.js"></script>
     <script src="./js/axios.js"></script>
+    <script src="./js/element-ui.js"></script>
     <script>
         new Vue({
             el: "#app",
             data: {
                 host: "http://192.168.0.202:8080",
-                address: "/shjh/api/map/getCityCaseSummary.shtml?orgId=6",
+                address: "/shjh/api/map/getCityCaseSummary.shtml?orgId=2",
                 name: '',
                 dataR: [],
                 dataB: [],
@@ -81,9 +306,86 @@
                 dataSJTJ:[],
                 dataY:[],
                 dataYJA:[],
-                dataYSJ:[]
+                dataYSJ:[],
+                orgId:'',
+                popShow:false,
+                isShowTip:false,
+                taskinfoModelList:[],
+                 taskId:'',
+                 tTaskinfo:{},
+                 imgList:[]
+            },
+            created(){
+                var request = new Object();
+                request = this.GetRequest();
+                this.orgId = request['orgId']
             },
             methods: {
+                listClickChange(id){
+                    this.taskId = id
+                    this.getPageInfo()
+                    this.isShowTip = true
+                },
+
+                closeSecPop(){
+                    this.isShowTip = false
+                    this.tTaskinfo ={}
+                    this.imgList = []
+                },
+
+                getPageInfo(){
+                    //http://localhost:8080/shjh/api/map/getCityEvents.shtml?taskId=1906H7638769
+                    var that = this
+                    axios.get('http://192.168.0.240:8080/shjh/api/map/getCityEvents.shtml',{       // 还可以直接把参数拼接在url后边
+                        params:{
+                            taskId:that.taskId
+                        }
+                    }).then(function(res){
+                       console.log(res)
+                       that.tTaskinfo = res.data.data.tTaskinfo
+                       that.imgList = res.data.data.imgName
+
+                       console.log(that.tTaskinfo)
+
+                    }).catch(function (error) {
+                      console.log(error)
+                    });
+                }, 
+                popup(i){
+                    console.log(i)
+                    this.popShow = true
+                    this.getPopData(i)
+                },
+                closePop(){
+                    this.popShow = false
+                    this.taskinfoModelList = []
+                },
+                GetRequest() {  
+                    var url = location.search; //获取url中"?"符后的字串  
+                    var theRequest = new Object();  
+                    if (url.indexOf("?") != -1) {  
+                        var str = url.substr(1);  
+                        var strs = str.split("&");  
+                        for (var i = 0; i < strs.length; i++) {  
+                            theRequest[strs[i].split("=")[0]] = decodeURI(strs[i].split("=")[1]);  
+                        }  
+                    }  
+                    return theRequest;  
+                },
+                getPopData(i){
+                    var that = this
+                    axios.get('http://192.168.0.240:8080/shjh/api/map/getCityCaseSummaryXQ.shtml',{       
+                        params:{
+                            orgId:that.orgId,
+                            type: i
+                        }
+                    }).then(function(res){
+                       console.log(res.data.data)
+                       that.taskinfoModelList = res.data.data.taskinfoModelList
+                    }).catch(function (error) {
+                      console.log(error)
+                    });
+                },
                 getData() {
                     const url = this.host + this.address
                     axios.get(url).then((res) => {
