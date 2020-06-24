@@ -85,9 +85,12 @@ body {
                     color: #fff;
                     line-height: 40px;
                     cursor: pointer;
+                    text-decoration: underline;
+                    text-decoration-color: #fbeb4f;
 
                     &:nth-of-type(7) {
                         cursor: default;
+                        text-decoration: none;
                     }
                 }
 
@@ -110,7 +113,7 @@ body {
         margin-top: 20px;
 
         .chart {
-            width: 470px;
+            width: 314px;
             height: 100%;
 
             .chart_top {
@@ -123,7 +126,8 @@ body {
                 font-weight: 500;
                 color: #fff;
                 background: url(../img/chart-tit-bg.png) no-repeat;
-                background-size: cover;
+                background-size: 100%;
+                background-position: center center;
             }
 
             .chart_bot {
@@ -134,7 +138,8 @@ body {
                 overflow: hidden;
 
                 #main1,
-                #main2 {
+                #main2,
+                #main3{
                     height: 100%;
                 }
             }

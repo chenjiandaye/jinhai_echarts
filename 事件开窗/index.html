@@ -48,10 +48,18 @@
             <div class="int_charts">
                 <div class="chart">
                     <div class="chart_top">
-                        事件统计
+                        案件类型
                     </div>
                     <div class="chart_bot">
                         <div id="main1"></div>
+                    </div>
+                </div>
+                <div class="chart">
+                    <div class="chart_top">
+                        案件来源
+                    </div>
+                    <div class="chart_bot">
+                        <div id="main3"></div>
                     </div>
                 </div>
                 <div class="chart">
@@ -298,7 +306,7 @@
             el: "#app",
             data: {
                 host: "http://192.168.0.202:8080",
-                address: "/shjh/api/map/getCityCaseSummary.shtml?orgId=2",
+                address: "/shjh/api/map/getCityCaseSummary.shtml?orgId=6",
                 name: '',
                 dataR: [],
                 dataB: [],
@@ -313,7 +321,9 @@
                 taskinfoModelList:[],
                  taskId:'',
                  tTaskinfo:{},
-                 imgList:[]
+                 imgList:[],
+                 infosourcenameArr:[],
+                 sumCountsArr:[]
             },
             created(){
                 var request = new Object();
@@ -401,17 +411,43 @@
                         console.log(err)
                     })
                 },
+                timeHandling(dataList){
+                    var Y = dataList.dataY
+                    var newY = []
+                    var YJA = dataList.dataYJA
+                    var YSJ = dataList.dataYSJ
+                    var currentM = new Date().getMonth() + 1
+                    Y.forEach((item)=>{
+                        var dataM = item.substr(5)
+                        dataM <= currentM && newY.push(item)
+                    })
+                    var length = newY.length
+                    var newYJA = YJA.slice(0,length)
+                    var newYSj = YSJ.slice(0,length)
+                    return {
+                        'dataY':newY,
+                        'dataYJA':newYJA,
+                        'dataYSJ':newYSj
+                    }
+                },
                 setData(dataList) {
-                    this.name = dataList.name
-                    this.dataR = dataList.dataR
-                    this.dataB = dataList.dataB
-                    this.dataN = dataList.dataN
-                    this.dataSJTJ = dataList.dataSJTJ
-                    this.setHistogram1()
-                    this.dataY = dataList.dataY
-                    this.dataYJA = dataList.dataYJA
-                    this.dataYSJ = dataList.dataYSJ
-                    this.setHistogram2()
+                    var _this = this
+                    _this.name = dataList.name
+                    _this.dataR = dataList.dataR
+                    _this.dataB = dataList.dataB
+                    _this.dataN = dataList.dataN
+                    _this.dataSJTJ = dataList.dataSJTJ
+                    _this.setHistogram1()
+                    var zData = _this.timeHandling(dataList)
+                    _this.dataY = zData.dataY
+                    _this.dataYJA = zData.dataYJA
+                    _this.dataYSJ = zData.dataYSJ
+                    _this.setHistogram2()
+                    dataList.taskinfoModelListSource.forEach((item)=>{
+                        _this.infosourcenameArr.push(item.infosourcename)
+                        _this.sumCountsArr.push(item.sumCounts)
+                    })
+                    _this.setHistogram3()
                 },
                 setHistogram1() {
                     var _this = this
@@ -445,40 +481,20 @@
                         },
                         grid: {
                             left: '3%',
-                            right: '3%',
+                            right: '5%',
                             bottom: 0,
                             containLabel: true
                         },
                         xAxis: [{
-                            type: 'category',
-                            data: ['事件', '热线', '部件'],
-                            axisTick: {
-                                show: false
-                            },
-                            axisLine: {
-                                lineStyle: {
-                                    color: '#555555', //x轴颜色
-                                }
-                            },
-                            axisLabel: {
-                                color: '#fff',
-                                fontSize: 12,
-                                rotate: 40
-                            },
-                            splitLine: {
-                                show: false //刻度线
-                            },
-                        }],
-                        yAxis: [{
                             type: 'value',
                             nameLocation: "middle",
                             axisTick: {
                                 show: false
                             },
                             axisLine: {
-                                show: false,
+                                show: true,
                                 lineStyle: {
-                                    color: '#555555', //y轴颜色
+                                    color: '#555555', //x轴颜色
                                 }
                             },
                             axisLabel: {
@@ -490,6 +506,26 @@
                                 lineStyle: {
                                     color: '#555555'
                                 }
+                            },
+                        }],
+                        yAxis: [{
+                            type: 'category',
+                            data: ['事件', '热线', '部件'],
+                            axisTick: {
+                                show: false
+                            },
+                            axisLine: {
+                                show: false,
+                                lineStyle: {
+                                    color: '#555555', //y轴颜色
+                                }
+                            },
+                            axisLabel: {
+                                color: '#fff',
+                                fontSize: 12,
+                            },
+                            splitLine: {
+                                show: false //刻度线
                             },
                         }],
                         series: [{
@@ -507,6 +543,101 @@
                         }
                     }
                     myChart1.setOption(option1)
+                },
+                setHistogram3() {
+                    var _this = this
+                    var myChart3 = echarts.init(document.getElementById('main3'))
+                    var option3 = {
+                        color: ['#01FEF6'],
+                        legend: {
+                            textStyle: {
+                                color: "#fff"
+                            },
+                            right: 10,
+                            top: 10,
+                            width: 50,
+                            height: 20,
+                            itemWidth: 16,
+                            itemHeight: 4,
+                            fontSize: 12
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                                type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                            },
+                            formatter: function (data) {
+                                let ttt = data[0].name;
+                                for (let i = 0; i < data.length; i++) {
+                                    ttt += '<br/>' + data[i].seriesName + '：' + data[i].value
+                                }
+                                return ttt;
+                            }
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '5%',
+                            bottom: 0,
+                            containLabel: true
+                        },
+                        xAxis: [{
+                            type: 'value',
+                            nameLocation: "middle",
+                            axisTick: {
+                                show: false
+                            },
+                            axisLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: '#555555', //x轴颜色
+                                }
+                            },
+                            axisLabel: {
+                                color: '#fff',
+                                fontSize: 12
+                            },
+                            splitLine: {
+                                show: true, //刻度线
+                                lineStyle: {
+                                    color: '#555555'
+                                }
+                            },
+                        }],
+                        yAxis: [{
+                            type: 'category',
+                            data: _this.infosourcenameArr,
+                            axisTick: {
+                                show: false
+                            },
+                            axisLine: {
+                                show: false,
+                                lineStyle: {
+                                    color: '#555555', //y轴颜色
+                                }
+                            },
+                            axisLabel: {
+                                color: '#fff',
+                                fontSize: 12,
+                            },
+                            splitLine: {
+                                show: false //刻度线
+                            },
+                        }],
+                        series: [{
+                            name: '数量',
+                            type: 'bar',
+                            barWidth: 30,
+                            data: _this.sumCountsArr
+                        }],
+                        label: {
+                            show: true,
+                            position: 'top',
+                            textStyle: { // 数值样式
+                                fontSize: 12
+                            }
+                        }
+                    }
+                    myChart3.setOption(option3)
                 },
                 setHistogram2() {
                     var _this = this
@@ -557,7 +688,7 @@
                             axisLabel: {
                                 color: '#fff',
                                 fontSize: 12,
-                                rotate: 40
+                                rotate: 45
                             },
                             splitLine: {
                                 show: false //刻度线
